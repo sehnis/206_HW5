@@ -2,11 +2,12 @@ import unittest
 import tweepy
 import requests
 import json
+import twitter_keys
 
 ## SI 206 - W17 - HW5
 ## COMMENT WITH:
-## Your section day/time:
-## Any names of people you worked with on this assignment:
+## Your section day/time: Friday, 9:00AM
+## Any names of people you worked with on this assignment: Just myself (sehnis)
 
 ######## 500 points total ########
 
@@ -35,10 +36,10 @@ import json
 ## **** If you choose not to do that, we strongly advise using authentication information for an 'extra' Twitter account you make just for this class, and not your personal account, because it's not ideal to share your authentication information for a real account that you use frequently.
 
 ## Get your secret values to authenticate to Twitter. You may replace each of these with variables rather than filling in the empty strings if you choose to do the secure way for 50 EC points
-consumer_key = "" 
-consumer_secret = ""
-access_token = ""
-access_token_secret = ""
+consumer_key = twitter_keys.consumer_key 
+consumer_secret = twitter_keys.consumer_secret
+access_token = twitter_keys.access_token
+access_token_secret = twitter_keys.access_token_secret
 ## Set up your authentication to Twitter
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
@@ -52,10 +53,13 @@ api = tweepy.API(auth, parser=tweepy.parsers.JSONParser()) # Set up library to g
 ## 3. Invoke your function, save the return value in a variable, and explore the data you got back!
 ## 4. With what you learn from the data -- e.g. how exactly to find the text of each tweet in the big nested structure -- write code to print out content from 3 tweets, as shown above.
 
-
-
-
-
+CACHE_FNAME = "cache_file.json"
+try:
+	cache_file_obj = open(CACHE_FNAME, 'r')
+	cache_contents = cache_file_obj.read()
+	CACHE_DICTION = json.loads(cache_contents)
+except:
+	CACHE_DICTION = {}
 
 
 
