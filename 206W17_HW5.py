@@ -83,18 +83,11 @@ def get_tweets(term):
 	tweet_text = []
 
 	for tweet_info in response_data:
-		tweet_text.append("TEXT: " + clean_tweet(tweet_info['text']))	
+		tweet_text.append("TEXT: " + tweet_info['text'])	
 		tweet_text.append("CREATED AT: " + tweet_info['created_at'])
 		##tweet_text.append("CREATED AT: ")
 
-
-
 	return tweet_text[:6]
-
-def clean_tweet(to_clean):
-	return to_clean
-	## return re.sub(r'\W+()', ' ', to_clean)
-
 
 to_search = input("What is your search term? ")
 tweet_output = get_tweets(to_search)
