@@ -2,6 +2,7 @@ import unittest
 import tweepy
 import requests
 import json
+import re
 import twitter_keys
 
 ## SI 206 - W17 - HW5
@@ -53,6 +54,7 @@ api = tweepy.API(auth, parser=tweepy.parsers.JSONParser()) # Set up library to g
 ## 3. Invoke your function, save the return value in a variable, and explore the data you got back!
 ## 4. With what you learn from the data -- e.g. how exactly to find the text of each tweet in the big nested structure -- write code to print out content from 3 tweets, as shown above.
 
+##	PART 1
 CACHE_FNAME = "cache_file.json"
 try:
 	cache_file_obj = open(CACHE_FNAME, 'r')
@@ -61,5 +63,40 @@ try:
 except:
 	CACHE_DICTION = {}
 
+## PART 2
+def get_tweets(term):
+	search_term = "twitter_{}".format(term)
+	if search_term in CACHE_DICTION:
+		print("Loading data on " + term + " from the cache...\n")
+		response_data = CACHE_DICTION[search_term]
+	else:
+		print("Finding new data on " + term + " from Twitter...\n")
+		## response_data = api.search(q = search_term)
+		response_data = api.user_timeline(term)
+		## response_data = search_results['statuses']
+		CACHE_DICTION[search_term] = response_data
+		cache_txt = open(CACHE_FNAME, 'w', encoding="utf-8")
+		cache_txt.write(json.dumps(CACHE_DICTION))
+		cache_txt.close()
+
+	## PART 3
+	tweet_text = []
+
+	for tweet_info in response_data:
+		tweet_text.append("TEXT: " + clean_tweet(tweet_info['text']))	
+		tweet_text.append("CREATED AT: " + tweet_info['created_at'])
+		##tweet_text.append("CREATED AT: ")
 
 
+
+	return tweet_text[:6]
+
+def clean_tweet(to_clean):
+	return to_clean
+	## return re.sub(r'\W+()', ' ', to_clean)
+
+
+to_search = input("What is your search term? ")
+tweet_output = get_tweets(to_search)
+for tweet in tweet_output:
+	print(tweet)
